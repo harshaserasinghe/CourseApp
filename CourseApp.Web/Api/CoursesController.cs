@@ -32,7 +32,6 @@ namespace CourseApp.Web.Api
         public ActionResult<IEnumerable<Course>> Get()
         {
             var courses = CourseRepository.GetAll();
-
             return Ok(courses);
         }
 
@@ -41,7 +40,6 @@ namespace CourseApp.Web.Api
         {
             CourseRepository.Add(newCourse);
             CourseRepository.Commit();
-
             return CreatedAtAction(nameof(Get), new { id = newCourse.Id }, newCourse);
         }
 
