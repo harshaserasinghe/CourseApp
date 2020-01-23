@@ -1,4 +1,6 @@
 using CourseApp.Data;
+using CourseApp.Data.Interfaces;
+using CourseApp.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -32,6 +34,8 @@ namespace CourseApp.Web
             {
                 options.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
             });
+
+            services.AddScoped<ICourseRepository, CourseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,9 +7,9 @@ namespace CourseApp.Data.Interfaces
     {
         Course GetById(int id);
         IEnumerable<Course> GetAll();
-        Course Add(Course course);
-        Course Update(Course course);
-        Course Delete(int id);
+        Course Add(Course newCourse);
+        void Update(Course updateCourse, Course existingCourse);
+        void Delete(Course deleteCourse);
         int Commit();
     }
 }

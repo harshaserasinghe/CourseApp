@@ -2,8 +2,8 @@
 {
     public enum CourseLevel
     {
-        Basic,
-        Intermediate,
-        Advancet
+        Basic = 1,
+        Intermediate = 2,
+        Advancet = 3
     }
 }

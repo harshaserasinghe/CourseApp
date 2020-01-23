@@ -1,6 +1,5 @@
 ﻿using CourseApp.Core.Entities;
 using CourseApp.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +21,7 @@ namespace CourseApp.Data.Repositories
 
         public Course GetById(int id)
         {
-            return CourseDbContext.Courses.Find(id);
+            return CourseDbContext.Courses.FirstOrDefault(c => c.Id == id);
         }
         public Course Add(Course newCourse)
         {
@@ -30,21 +29,14 @@ namespace CourseApp.Data.Repositories
             return newCourse;
         }
 
-        public Course Update(Course updateCourse)
+        public void Update(Course updateCourse, Course existingCourse)
         {
-            var entity = CourseDbContext.Attach(updateCourse);
-            entity.State = EntityState.Modified;
-            return updateCourse;
+            CourseDbContext.Entry(existingCourse).CurrentValues.SetValues(updateCourse);
         }
 
-        public Course Delete(int id)
+        public void Delete(Course deleteCourse)
         {
-            var deleteCourse = GetById(id);
-            if (deleteCourse != null)
-            {
-                CourseDbContext.Courses.Remove(deleteCourse);
-            }
-            return deleteCourse;
+            CourseDbContext.Courses.Remove(deleteCourse);
         }
 
         public int Commit()
