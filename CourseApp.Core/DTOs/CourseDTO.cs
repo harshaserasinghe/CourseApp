@@ -1,9 +1,10 @@
 ﻿using CourseApp.Core.Entities;
 using System;
 
-namespace CourseApp.Core.Models
+namespace CourseApp.Core.DTOs
+
 {
-    public class CourseModel
+    public class CourseDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,4 +1,4 @@
-using CourseApp.Core.Validators;
+using AutoMapper;
 using CourseApp.Data;
 using CourseApp.Data.Interfaces;
 using CourseApp.Data.Repositories;
@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace CourseApp.Web
 {
@@ -25,9 +26,11 @@ namespace CourseApp.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(Assembly.Load("CourseApp.Core"));
+
             services.AddControllersWithViews().AddFluentValidation(opt =>
             {
-                opt.RegisterValidatorsFromAssemblyContaining<CourseValidator>();
+                opt.RegisterValidatorsFromAssembly(Assembly.Load("CourseApp.Core"));
             });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(con =>

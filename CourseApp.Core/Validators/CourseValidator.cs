@@ -12,6 +12,7 @@ namespace CourseApp.Core.Validators
             RuleFor(c => c.Rating).NotEmpty().InclusiveBetween(1, 5);
             RuleFor(c => c.Category).NotEmpty();
             RuleFor(c => c.Author).NotEmpty();
+            RuleFor(c => c.PublishedDate).NotEmpty();
         }
     }
 }

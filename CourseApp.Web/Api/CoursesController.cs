@@ -1,6 +1,10 @@
-﻿using CourseApp.Core.Entities;
+﻿using AutoMapper;
+using CourseApp.Core.DTOs;
+using CourseApp.Core.Entities;
+using CourseApp.Core.Validators;
 using CourseApp.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace CourseApp.Web.Api
@@ -10,37 +14,51 @@ namespace CourseApp.Web.Api
     public class CoursesController : ControllerBase
     {
         public ICourseRepository CourseRepository { get; private set; }
-        public CoursesController(ICourseRepository courseRepository)
+        public IMapper Mapper { get; }
+        public CourseValidator CourseValidator { get; private set; }
+
+        public CoursesController(
+            ICourseRepository courseRepository,
+            IMapper mapper,
+            CourseValidator courseValidator)
         {
             CourseRepository = courseRepository;
+            Mapper = mapper;
+            CourseValidator = courseValidator;
         }
 
         [HttpGet("{id}")]
         public ActionResult<Course> Get(int id)
         {
             var course = CourseRepository.GetById(id);
+            var courseDTO = Mapper.Map<CourseDTO>(course);
 
-            if (course == null)
+            if (courseDTO == null)
             {
                 return NotFound();
             }
 
-            return Ok(course);
+            return Ok(courseDTO);
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Course>> Get()
         {
             var courses = CourseRepository.GetAll();
-            return Ok(courses);
+            var courseDTOs = Mapper.Map<IEnumerable<CourseDTO>>(courses);
+            return Ok(courseDTOs);
         }
 
         [HttpPost]
-        public IActionResult Post(Course newCourse)
+        public IActionResult Post(CourseDTO courseDTO)
         {
-            if (!ModelState.IsValid)
+            var newCourse = Mapper.Map<Course>(courseDTO);
+            newCourse.PublishedDate = DateTime.Now;
+            var valRes = CourseValidator.Validate(newCourse);
+
+            if (!valRes.IsValid)
             {
-                return BadRequest();
+                return BadRequest(valRes.ToString());
             }
 
             CourseRepository.Add(newCourse);
@@ -49,9 +67,9 @@ namespace CourseApp.Web.Api
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Course updateCourse)
+        public IActionResult Put(int id, CourseDTO courseDTO)
         {
-            if (id != updateCourse.Id || !ModelState.IsValid)
+            if (id != courseDTO.Id)
             {
                 return BadRequest();
             }
@@ -61,6 +79,15 @@ namespace CourseApp.Web.Api
             if (existingCourse == null)
             {
                 return NotFound();
+            }
+
+            var updateCourse = Mapper.Map<Course>(courseDTO);
+            updateCourse.PublishedDate = existingCourse.PublishedDate;
+            var valRes = CourseValidator.Validate(updateCourse);
+
+            if (!valRes.IsValid)
+            {
+                return BadRequest(valRes.ToString());
             }
 
             CourseRepository.Update(updateCourse, existingCourse);
