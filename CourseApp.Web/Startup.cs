@@ -1,6 +1,8 @@
+using CourseApp.Core.Validators;
 using CourseApp.Data;
 using CourseApp.Data.Interfaces;
 using CourseApp.Data.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -23,16 +25,19 @@ namespace CourseApp.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddControllersWithViews().AddFluentValidation(opt =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                opt.RegisterValidatorsFromAssemblyContaining<CourseValidator>();
+            });
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(con =>
+            {
+                con.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<CourseDbContext>(options =>
+            services.AddDbContext<CourseDbContext>(opt =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
+                opt.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
             });
 
             services.AddScoped<ICourseRepository, CourseRepository>();

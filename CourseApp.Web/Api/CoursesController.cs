@@ -38,6 +38,11 @@ namespace CourseApp.Web.Api
         [HttpPost]
         public IActionResult Post(Course newCourse)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             CourseRepository.Add(newCourse);
             CourseRepository.Commit();
             return CreatedAtAction(nameof(Get), new { id = newCourse.Id }, newCourse);
@@ -46,7 +51,7 @@ namespace CourseApp.Web.Api
         [HttpPut("{id}")]
         public IActionResult Put(int id, Course updateCourse)
         {
-            if (id != updateCourse.Id)
+            if (id != updateCourse.Id || !ModelState.IsValid)
             {
                 return BadRequest();
             }
