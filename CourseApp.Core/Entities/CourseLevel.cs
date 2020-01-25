@@ -4,6 +4,6 @@
     {
         Basic = 1,
         Intermediate = 2,
-        Advancet = 3
+        Advance = 3
     }
 }

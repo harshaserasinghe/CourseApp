@@ -23,7 +23,6 @@ namespace CourseApp.Web
 
         public IConfiguration Configuration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.Load("CourseApp.Core"));
@@ -32,7 +31,7 @@ namespace CourseApp.Web
             {
                 opt.RegisterValidatorsFromAssembly(Assembly.Load("CourseApp.Core"));
             });
-            // In production, the Angular files will be served from this directory
+
             services.AddSpaStaticFiles(con =>
             {
                 con.RootPath = "ClientApp/dist";
@@ -46,7 +45,6 @@ namespace CourseApp.Web
             services.AddScoped<ICourseRepository, CourseRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -56,12 +54,12 @@ namespace CourseApp.Web
             else
             {
                 app.UseExceptionHandler("/error-production");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -78,9 +76,6 @@ namespace CourseApp.Web
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
