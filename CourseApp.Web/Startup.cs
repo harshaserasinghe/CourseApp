@@ -1,10 +1,16 @@
+using AutoMapper;
+using CourseApp.Data;
+using CourseApp.Data.Interfaces;
+using CourseApp.Data.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace CourseApp.Web
 {
@@ -15,17 +21,29 @@ namespace CourseApp.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddAutoMapper(Assembly.Load("CourseApp.Core"));
+
+            services.AddControllersWithViews().AddFluentValidation(opt =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                opt.RegisterValidatorsFromAssembly(Assembly.Load("CourseApp.Core"));
             });
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(con =>
+            {
+                con.RootPath = "ClientApp/dist";
+            });
+
+            services.AddDbContext<CourseDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
+            });
+
+            services.AddScoped<ICourseRepository, CourseRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,11 +51,11 @@ namespace CourseApp.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error-development");
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/error-production");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
