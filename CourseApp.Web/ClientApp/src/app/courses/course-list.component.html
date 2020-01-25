@@ -1,0 +1,18 @@
+<table class="table table-striped" aria-labelledby="tableLabel" *ngIf="courses">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Skill Level</th>
+      <th>Rating</th>
+      <th>Path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of courses">
+      <td>{{ course.name }}</td>
+      <td>{{ course.level }}</td>
+      <td>{{ course.rating }}</td>
+      <td>{{ course.category }}</td>
+    </tr>
+  </tbody>
+</table>
