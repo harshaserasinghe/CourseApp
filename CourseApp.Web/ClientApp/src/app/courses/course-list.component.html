@@ -9,7 +9,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let course of courses">
-      <td>{{ course.name }}</td>
+      <td>
+        <a [routerLink]="['/course-details', course.id]">
+          {{ course.name }}
+        </a>
+      </td>
       <td>{{ course.level }}</td>
       <td>{{ course.rating }}</td>
       <td>{{ course.category }}</td>

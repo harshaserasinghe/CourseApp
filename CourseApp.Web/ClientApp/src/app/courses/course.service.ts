@@ -23,6 +23,12 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
+  getCourse(id: number): Observable<ICourse> {
+    return this.http
+      .get<ICourse>(`${this.courseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(err: HttpErrorResponse) {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
