@@ -9,6 +9,7 @@ import { CourseService } from "./course.service";
 })
 export class CourseListComponent implements OnInit {
   courses: ICourse[] = [];
+  filterBy: string = "";
 
   constructor(private courseService: CourseService) {}
 
@@ -17,7 +18,7 @@ export class CourseListComponent implements OnInit {
   }
 
   getCourses() {
-    this.courseService.getCourses().subscribe(
+    this.courseService.getCourses(this.filterBy).subscribe(
       courses => {
         this.courses = courses;
       },

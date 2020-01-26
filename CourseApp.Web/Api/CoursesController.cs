@@ -42,9 +42,9 @@ namespace CourseApp.Web.Api
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Course>> Get()
+        public ActionResult<IEnumerable<Course>> Get(string filter)
         {
-            var courses = CourseRepository.GetAll();
+            var courses = CourseRepository.GetAll(filter);
             var courseDTOs = Mapper.Map<IEnumerable<CourseDTO>>(courses);
             return Ok(courseDTOs);
         }

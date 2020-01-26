@@ -4,9 +4,9 @@ import { ICourse } from "./course";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
-  selector: "app-coursedetails",
-  templateUrl: "./coursedetails.component.html",
-  styleUrls: ["./coursedetails.component.css"]
+  selector: "app-course-details",
+  templateUrl: "./course-details.component.html",
+  styleUrls: ["./course-details.component.css"]
 })
 export class CourseDetailsComponent implements OnInit {
   course: ICourse;

@@ -1,22 +1,42 @@
-<table class="table table-striped" aria-labelledby="tableLabel" *ngIf="courses">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Skill Level</th>
-      <th>Rating</th>
-      <th>Path</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let course of courses">
-      <td>
-        <a [routerLink]="['/course-details', course.id]">
-          {{ course.name }}
-        </a>
-      </td>
-      <td>{{ course.level }}</td>
-      <td>{{ course.rating }}</td>
-      <td>{{ course.category }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="card">
+  <div class="card-body">
+    <div class="row search-row">
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="filterBy" />
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary search-btn" (click)="getCourses()">
+          Search
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table
+        class="table table-striped"
+        aria-labelledby="tableLabel"
+        *ngIf="courses"
+      >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Skill Level</th>
+            <th>Rating</th>
+            <th>Path</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of courses">
+            <td>
+              <a [routerLink]="['/course-details', course.id]">
+                {{ course.name }}
+              </a>
+            </td>
+            <td>{{ course.level }}</td>
+            <td>{{ course.rating }}</td>
+            <td>{{ course.category }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

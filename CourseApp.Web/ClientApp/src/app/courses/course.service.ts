@@ -1,5 +1,9 @@
 import { Injectable, Inject } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams
+} from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { ICourse } from "./course";
@@ -17,9 +21,10 @@ export class CourseService {
     this.courseUrl = `${this.baseUrl}api/courses`;
   }
 
-  getCourses(): Observable<ICourse[]> {
+  getCourses(filter: string): Observable<ICourse[]> {
+    const params = new HttpParams().set("filter", filter);
     return this.http
-      .get<ICourse[]>(this.courseUrl)
+      .get<ICourse[]>(this.courseUrl, { params })
       .pipe(catchError(this.handleError));
   }
 

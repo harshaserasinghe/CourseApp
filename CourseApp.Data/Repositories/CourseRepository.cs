@@ -14,9 +14,16 @@ namespace CourseApp.Data.Repositories
             CourseDbContext = courseDbContext;
         }
 
-        public IEnumerable<Course> GetAll()
+        public IEnumerable<Course> GetAll(string filter)
         {
-            return CourseDbContext.Courses.ToList();
+            if (filter == null)
+            {
+                return CourseDbContext.Courses.ToList();
+            }
+            else
+            {
+                return CourseDbContext.Courses.Where(c => c.Name.Contains(filter)).ToList();
+            }
         }
 
         public Course GetById(int id)
