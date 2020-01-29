@@ -20,7 +20,7 @@ export class CourseDeleteComponent implements OnInit {
 
   deleteCourse() {
     let param = +this.route.snapshot.paramMap.get("id");
-    this.courseService.deleteCourse(param).subscribe(
+    this.courseService.removeCourse(param).subscribe(
       () => {
         this.router.navigate(["/"]);
       },

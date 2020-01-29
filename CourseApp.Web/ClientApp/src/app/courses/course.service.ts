@@ -5,7 +5,7 @@ import {
   HttpParams,
   HttpHeaders
 } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { Observable, throwError, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { ICourse } from "./course";
 
@@ -35,17 +35,17 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  addCourse(course: ICourse): Observable<any> {
-    let options = {
+  addCourse(course: ICourse): Observable<ICourse> {
+    const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     return this.http
-      .post(this.courseUrl, course, options)
+      .post<ICourse>(this.courseUrl, course, options)
       .pipe(catchError(this.handleError));
   }
 
-  updateCourse(id: number, course: ICourse): Observable<any> {
-    let options = {
+  updateCourse(id: number, course: ICourse) {
+    const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     return this.http
@@ -53,7 +53,7 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  deleteCourse(id: number): Observable<any> {
+  removeCourse(id: number) {
     return this.http
       .delete(`${this.courseUrl}/${id}`)
       .pipe(catchError(this.handleError));

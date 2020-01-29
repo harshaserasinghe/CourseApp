@@ -44,8 +44,8 @@ export class CourseCreateComponent implements OnInit {
       author: this.author.value
     };
     this.courseService.addCourse(course).subscribe(
-      () => {
-        this.router.navigate(["/"]);
+      course => {
+        this.router.navigate([`course-details/${course.id}`]);
       },
       error => {
         console.log(error);
