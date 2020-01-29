@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CourseService } from "./course.service";
-import { ICourse } from "./course";
+import { ICourse, CourseLevel } from "./course";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -34,6 +34,10 @@ export class CourseDetailsComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  getEnumValue(value: any) {
+    return CourseLevel[value];
   }
 
   onBack(): void {
