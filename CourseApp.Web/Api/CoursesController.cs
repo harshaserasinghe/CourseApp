@@ -105,7 +105,7 @@ namespace CourseApp.Web.Api
                 return NotFound();
             }
 
-            CourseRepository.Delete(deleteCourse);
+            CourseRepository.Remove(deleteCourse);
             CourseRepository.Commit();
             return NoContent();
         }

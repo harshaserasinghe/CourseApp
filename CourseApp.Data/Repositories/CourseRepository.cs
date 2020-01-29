@@ -41,7 +41,7 @@ namespace CourseApp.Data.Repositories
             CourseDbContext.Entry(existingCourse).CurrentValues.SetValues(updateCourse);
         }
 
-        public void Delete(Course deleteCourse)
+        public void Remove(Course deleteCourse)
         {
             CourseDbContext.Courses.Remove(deleteCourse);
         }

@@ -2,7 +2,8 @@ import { Injectable, Inject } from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpParams
+  HttpParams,
+  HttpHeaders
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
@@ -31,6 +32,30 @@ export class CourseService {
   getCourse(id: number): Observable<ICourse> {
     return this.http
       .get<ICourse>(`${this.courseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addCourse(course: ICourse): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http
+      .post(this.courseUrl, course, options)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateCourse(id: number, course: ICourse): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http
+      .put(`${this.courseUrl}/${id}`, course, options)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteCourse(id: number): Observable<any> {
+    return this.http
+      .delete(`${this.courseUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }
 

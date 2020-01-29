@@ -9,7 +9,7 @@ namespace CourseApp.Data.Interfaces
         IEnumerable<Course> GetAll(string filter);
         Course Add(Course newCourse);
         void Update(Course updateCourse, Course existingCourse);
-        void Delete(Course deleteCourse);
+        void Remove(Course deleteCourse);
         int Commit();
     }
 }

@@ -22,6 +22,8 @@
             <th>Skill Level</th>
             <th>Rating</th>
             <th>Path</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +33,25 @@
                 {{ course.name }}
               </a>
             </td>
-            <td>{{ course.level }}</td>
+            <td>{{ getEnumValue(course.level) }}</td>
             <td>{{ course.rating }}</td>
             <td>{{ course.category }}</td>
+            <td>
+              <a
+                [routerLink]="['/course-edit', course.id]"
+                class="btn btn-primary"
+              >
+                Edit
+              </a>
+            </td>
+            <td>
+              <a
+                [routerLink]="['/course-delete', course.id]"
+                class="btn btn-primary"
+              >
+                Delete
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>

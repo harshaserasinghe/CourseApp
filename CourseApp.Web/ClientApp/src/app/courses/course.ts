@@ -1,15 +1,15 @@
 export interface ICourse {
-  id: number;
+  id?: number;
   name: string;
   level: CourseLevel;
   rating: number;
   category: number;
-  publishedDate: Date;
   author: string;
+  publishedDate?: Date;
 }
 
-enum CourseLevel {
-  basic = 1,
-  intermediate = 2,
-  advance = 3
+export enum CourseLevel {
+  Basic = 1,
+  Intermediate = 2,
+  Advance = 3
 }
