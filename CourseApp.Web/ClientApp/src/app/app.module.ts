@@ -13,6 +13,7 @@ import { CourseCreateComponent } from "./courses/course-create.component";
 import { CourseEditComponent } from "./courses/course-edit.component";
 import { EnumMemberPipe } from "./shared/enum-member.pipe";
 import { appRoutes } from "./shared/routes";
+import { OrderModule } from "ngx-order-pipe";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { appRoutes } from "./shared/routes";
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
+    OrderModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

@@ -18,15 +18,31 @@
       >
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Skill Level</th>
-            <th>Rating</th>
+            <th [class.active]="order === 'name'" (click)="setOrder('name')">
+              Title<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
+            <th [class.active]="order === 'level'" (click)="setOrder('level')">
+              Skill Level<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
+            <th
+              [class.active]="order === 'rating'"
+              (click)="setOrder('rating')"
+            >
+              Rating<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
             <th>Path</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let course of courses">
+          <tr
+            *ngFor="
+              let course of courses | orderBy: order:reverse:'case-insensitive'
+            "
+          >
             <td>
               <a [routerLink]="['/course-details', course.id]">
                 {{ course.name }}

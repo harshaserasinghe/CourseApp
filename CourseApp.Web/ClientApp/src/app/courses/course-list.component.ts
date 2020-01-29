@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { ICourse, CourseLevel } from "./course";
+import { ICourse } from "./course";
 import { CourseService } from "./course.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { OrderPipe } from "ngx-order-pipe";
 
 @Component({
   selector: "course-list",
@@ -13,10 +14,13 @@ export class CourseListComponent implements OnInit {
   filterBy: string = "";
   closeResult: string;
   selectedCourseId: number;
+  order: string = "name";
+  reverse: boolean = false;
 
   constructor(
     private courseService: CourseService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private orderPipe: OrderPipe
   ) {}
 
   ngOnInit() {
@@ -26,7 +30,12 @@ export class CourseListComponent implements OnInit {
   getCourses() {
     this.courseService.getCourses(this.filterBy).subscribe(
       courses => {
-        this.courses = courses;
+        this.courses = this.orderPipe.transform(
+          courses,
+          this.order,
+          this.reverse,
+          true
+        );
       },
       error => {
         console.log(error);
@@ -37,7 +46,7 @@ export class CourseListComponent implements OnInit {
   deleteCourse() {
     this.courseService.removeCourse(this.selectedCourseId).subscribe(
       () => {
-        this.updateCourses();
+        this.updateTable();
         this.modalService.dismissAll();
       },
       error => {
@@ -46,10 +55,18 @@ export class CourseListComponent implements OnInit {
     );
   }
 
-  private updateCourses() {
+  private updateTable() {
     let index = this.courses.findIndex(c => c.id == this.selectedCourseId);
     this.courses.splice(index, 1);
     this.selectedCourseId = 0;
+  }
+
+  setOrder(value: string) {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    }
+
+    this.order = value;
   }
 
   open(deleteModal, id: number) {
