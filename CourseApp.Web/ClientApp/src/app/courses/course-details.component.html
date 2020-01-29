@@ -8,11 +8,11 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-4">Rating</div>
-          <div class="col-md-8">{{ course.rating }}</div>
+          <div class="col-md-8">{{ course.rating }}/5</div>
         </div>
         <div class="row">
           <div class="col-md-4">Skill Level</div>
-          <div class="col-md-8">{{ getEnumValue(course.level) }}</div>
+          <div class="col-md-8">{{ course.level | enumMember }}</div>
         </div>
         <div class="row">
           <div class="col-md-4">Path</div>

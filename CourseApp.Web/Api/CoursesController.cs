@@ -6,6 +6,7 @@ using CourseApp.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CourseApp.Web.Api
 {
@@ -44,7 +45,7 @@ namespace CourseApp.Web.Api
         [HttpGet]
         public ActionResult<IEnumerable<Course>> Get(string filter)
         {
-            var courses = CourseRepository.GetAll(filter);
+            var courses = CourseRepository.GetAll(filter).OrderBy(c => c.Name);
             var courseDTOs = Mapper.Map<IEnumerable<CourseDTO>>(courses);
             return Ok(courseDTOs);
         }

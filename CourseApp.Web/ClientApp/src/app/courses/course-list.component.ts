@@ -34,10 +34,6 @@ export class CourseListComponent implements OnInit {
     );
   }
 
-  getEnumValue(value: any) {
-    return CourseLevel[value];
-  }
-
   deleteCourse() {
     this.courseService.removeCourse(this.selectedCourseId).subscribe(
       () => {

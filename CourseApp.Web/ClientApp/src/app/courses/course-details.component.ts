@@ -36,10 +36,6 @@ export class CourseDetailsComponent implements OnInit {
     );
   }
 
-  getEnumValue(value: any) {
-    return CourseLevel[value];
-  }
-
   onBack(): void {
     this.router.navigate(["/"]);
   }

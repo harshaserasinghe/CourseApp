@@ -11,7 +11,8 @@ import { CourseListComponent } from "./courses/course-list.component";
 import { CourseDetailsComponent } from "./courses/course-details.component";
 import { CourseCreateComponent } from "./courses/course-create.component";
 import { CourseEditComponent } from "./courses/course-edit.component";
-import { CourseDeleteComponent } from "./courses/course-delete.component";
+import { EnumMemberPipe } from "./shared/enum-member.pipe";
+import { appRoutes } from "./shared/routes";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { CourseDeleteComponent } from "./courses/course-delete.component";
     CourseDetailsComponent,
     CourseCreateComponent,
     CourseEditComponent,
-    CourseDeleteComponent
+    EnumMemberPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -29,13 +30,7 @@ import { CourseDeleteComponent } from "./courses/course-delete.component";
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: "", component: CourseListComponent, pathMatch: "full" },
-      { path: "course-details/:id", component: CourseDetailsComponent },
-      { path: "course-create", component: CourseCreateComponent },
-      { path: "course-edit/:id", component: CourseEditComponent },
-      { path: "course-delete/:id", component: CourseDeleteComponent }
-    ])
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
