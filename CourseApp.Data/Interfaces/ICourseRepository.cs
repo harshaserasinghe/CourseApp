@@ -6,10 +6,10 @@ namespace CourseApp.Data.Interfaces
     public interface ICourseRepository
     {
         Course GetById(int id);
-        IEnumerable<Course> GetAll();
+        IEnumerable<Course> GetAll(string filter);
         Course Add(Course newCourse);
         void Update(Course updateCourse, Course existingCourse);
-        void Delete(Course deleteCourse);
+        void Remove(Course deleteCourse);
         int Commit();
     }
 }
