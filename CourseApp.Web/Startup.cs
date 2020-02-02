@@ -1,10 +1,12 @@
 using AutoMapper;
+using CourseApp.Core.Entities;
 using CourseApp.Data;
 using CourseApp.Data.Interfaces;
 using CourseApp.Data.Repositories;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +43,9 @@ namespace CourseApp.Web
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
             });
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<CourseDbContext>();
 
             services.AddScoped<ICourseRepository, CourseRepository>();
         }
