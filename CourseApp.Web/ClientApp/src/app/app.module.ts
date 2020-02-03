@@ -14,6 +14,7 @@ import { CourseEditComponent } from "./courses/course-edit.component";
 import { EnumMemberPipe } from "./shared/enum-member.pipe";
 import { appRoutes } from "./shared/routes";
 import { OrderModule } from "ngx-order-pipe";
+import { UserRegisterComponent } from './users/user-register.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { OrderModule } from "ngx-order-pipe";
     CourseDetailsComponent,
     CourseCreateComponent,
     CourseEditComponent,
-    EnumMemberPipe
+    EnumMemberPipe,
+    UserRegisterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
