@@ -7,7 +7,9 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ICourse } from "./course";
+import { ICourseDTO } from "./course-dto";
+import { ICourseUpdateDTO } from "./course-update-dto";
+import { ICourseCreateDTO } from "./course-create-dto";
 
 @Injectable({
   providedIn: "root"
@@ -22,29 +24,29 @@ export class CourseService {
     this.courseUrl = `${this.baseUrl}api/courses`;
   }
 
-  getCourses(filter: string): Observable<ICourse[]> {
+  getCourses(filter: string): Observable<ICourseDTO[]> {
     const params = new HttpParams().set("filter", filter);
     return this.http
-      .get<ICourse[]>(this.courseUrl, { params })
+      .get<ICourseDTO[]>(this.courseUrl, { params })
       .pipe(catchError(this.handleError));
   }
 
-  getCourse(id: number): Observable<ICourse> {
+  getCourse(id: number): Observable<ICourseDTO> {
     return this.http
-      .get<ICourse>(`${this.courseUrl}/${id}`)
+      .get<ICourseDTO>(`${this.courseUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  addCourse(course: ICourse): Observable<ICourse> {
+  addCourse(course: ICourseCreateDTO): Observable<ICourseDTO> {
     const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     return this.http
-      .post<ICourse>(this.courseUrl, course, options)
+      .post<ICourseDTO>(this.courseUrl, course, options)
       .pipe(catchError(this.handleError));
   }
 
-  updateCourse(id: number, course: ICourse) {
+  updateCourse(id: number, course: ICourseUpdateDTO) {
     const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };

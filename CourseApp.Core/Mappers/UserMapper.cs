@@ -12,8 +12,6 @@ namespace CourseApp.Core.Mappers
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
             CreateMap<User, UserDTO>();
-            //.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.));
-
         }
     }
 }

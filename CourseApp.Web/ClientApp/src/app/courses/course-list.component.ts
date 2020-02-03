@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ICourse } from "./course";
+import { ICourseDTO } from "./course-dto";
 import { CourseService } from "./course.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { OrderPipe } from "ngx-order-pipe";
@@ -10,7 +10,7 @@ import { OrderPipe } from "ngx-order-pipe";
   styleUrls: ["./course-list.component.css"]
 })
 export class CourseListComponent implements OnInit {
-  courses: ICourse[] = [];
+  courses: ICourseDTO[] = [];
   filterBy: string = "";
   closeResult: string;
   selectedCourseId: number;

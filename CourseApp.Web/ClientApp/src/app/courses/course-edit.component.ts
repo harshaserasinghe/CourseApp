@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ICourse } from "./course";
+import { ICourseDTO } from "./course-dto";
 import { CourseService } from "./course.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ICourseUpdateDTO } from "./course-update-dto";
 
 @Component({
   selector: "app-course-edit",
@@ -16,7 +17,7 @@ export class CourseEditComponent implements OnInit {
   rating: FormControl;
   category: FormControl;
   author: FormControl;
-  course: ICourse;
+  course: ICourseDTO;
 
   constructor(
     private courseService: CourseService,
@@ -64,7 +65,7 @@ export class CourseEditComponent implements OnInit {
   }
 
   updateCourse(): void {
-    let course: ICourse = {
+    let courseUpdateDTO: ICourseUpdateDTO = {
       id: this.course.id,
       name: this.name.value,
       level: +this.level.value,
@@ -75,7 +76,7 @@ export class CourseEditComponent implements OnInit {
 
     let param = +this.route.snapshot.paramMap.get("id");
 
-    this.courseService.updateCourse(param, course).subscribe(
+    this.courseService.updateCourse(param, courseUpdateDTO).subscribe(
       () => {
         this.router.navigate(["/"]);
       },

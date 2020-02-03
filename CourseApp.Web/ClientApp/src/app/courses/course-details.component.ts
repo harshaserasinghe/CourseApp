@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CourseService } from "./course.service";
-import { ICourse } from "./course";
+import { ICourseDTO } from "./course-dto";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ["./course-details.component.css"]
 })
 export class CourseDetailsComponent implements OnInit {
-  course: ICourse;
+  course: ICourseDTO;
 
   constructor(
     private courseService: CourseService,

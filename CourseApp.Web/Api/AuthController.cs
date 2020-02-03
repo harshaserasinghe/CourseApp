@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using CourseApp.Core.DTOs;
 using CourseApp.Core.Entities;
-using CourseApp.Core.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -24,40 +22,27 @@ namespace CourseApp.Web.Api
         public SignInManager<User> SignInManager { get; }
         public IConfiguration Configuration { get; }
         public IMapper Mapper { get; }
-        public UserValidator UserValidator { get; }
-        public LoginValidator LoginValidator { get; }
 
         public AuthController(UserManager<User> userManager,
             SignInManager<User> signInManager,
             IConfiguration configuration,
-            IMapper mapper,
-            UserValidator userValidator,
-            LoginValidator loginValidator)
+            IMapper mapper)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             Configuration = configuration;
             Mapper = mapper;
-            UserValidator = userValidator;
-            LoginValidator = loginValidator;
         }
 
         [HttpPost, Route("register")]
         public async Task<IActionResult> RegisterAsync(UserRegistrationDTO userRegistrationDTO)
         {
-            var valRes = await UserValidator.ValidateAsync(userRegistrationDTO);
-
-            if (!valRes.IsValid)
-            {
-                return BadRequest(valRes.ToString());
-            }
-
             var user = Mapper.Map<User>(userRegistrationDTO);
-            var result = await UserManager.CreateAsync(user, userRegistrationDTO.Password);
+            var idetityResult = await UserManager.CreateAsync(user, userRegistrationDTO.Password);
 
-            if (!result.Succeeded)
+            if (!idetityResult.Succeeded)
             {
-                return BadRequest(result.Errors);
+                return BadRequest(idetityResult.Errors);
             }
 
             return Ok();
@@ -66,16 +51,9 @@ namespace CourseApp.Web.Api
         [HttpPost, Route("login")]
         public async Task<IActionResult> LoginAsync(LoginDTO loginDTO)
         {
-            var valRes = await LoginValidator.ValidateAsync(loginDTO);
+            var signInResult = await SignInManager.PasswordSignInAsync(loginDTO.Username, loginDTO.Password, false, false);
 
-            if (!valRes.IsValid)
-            {
-                return BadRequest(valRes.ToString());
-            }
-
-            var result = await SignInManager.PasswordSignInAsync(loginDTO.Username, loginDTO.Password, false, false);
-
-            if (!result.Succeeded)
+            if (!signInResult.Succeeded)
             {
                 return Unauthorized();
             }
@@ -91,10 +69,11 @@ namespace CourseApp.Web.Api
             return Ok();
         }
 
-        [HttpGet, Route("getuser"), Authorize]
+        [HttpGet, Route("getuser")]
         public async Task<ActionResult<UserDTO>> GetUser()
         {
-            var user = await UserManager.GetUserAsync(HttpContext.User);
+            var principal = HttpContext.User;
+            var user = await UserManager.GetUserAsync(principal);
             var userDTO = Mapper.Map<UserDTO>(user);
             return Ok(userDTO);
         }

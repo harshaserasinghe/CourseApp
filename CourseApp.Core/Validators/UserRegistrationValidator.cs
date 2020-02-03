@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace CourseApp.Core.Validators
 {
-    public class UserValidator : AbstractValidator<UserRegistrationDTO>
+    public class UserRegistrationValidator : AbstractValidator<UserRegistrationDTO>
     {
-        public UserValidator()
+        public UserRegistrationValidator()
         {
             RuleFor(c => c.FirstName).NotEmpty();
             RuleFor(c => c.LastName).NotEmpty();
