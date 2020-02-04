@@ -30,6 +30,16 @@ namespace CourseApp.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+                });
+            });
+
             services.AddAutoMapper(Assembly.Load("CourseApp.Core"));
 
             services.AddControllersWithViews().AddFluentValidation(opt =>
@@ -88,6 +98,7 @@ namespace CourseApp.Web
                 app.UseHsts();
             }
 
+            app.UseCors("EnableCORS");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

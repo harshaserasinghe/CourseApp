@@ -2,6 +2,7 @@
 using CourseApp.Core.DTOs;
 using CourseApp.Core.Entities;
 using CourseApp.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace CourseApp.Web.Api
             return Ok(courseDTOs);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult Post(CourseCreateDTO courseCreateDTO)
         {
             var newCourse = Mapper.Map<Course>(courseCreateDTO);

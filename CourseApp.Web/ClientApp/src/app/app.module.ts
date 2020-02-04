@@ -14,7 +14,14 @@ import { CourseEditComponent } from "./courses/course-edit.component";
 import { EnumMemberPipe } from "./shared/enum-member.pipe";
 import { appRoutes } from "./shared/routes";
 import { OrderModule } from "ngx-order-pipe";
-import { UserRegisterComponent } from './users/user-register.component';
+import { RegisterComponent } from "./users/register.component";
+import { LoginComponent } from "./users/login.component";
+import { LogoutComponent } from "./users/logout.component";
+import { JwtModule } from "@auth0/angular-jwt";
+
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -25,7 +32,9 @@ import { UserRegisterComponent } from './users/user-register.component';
     CourseCreateComponent,
     CourseEditComponent,
     EnumMemberPipe,
-    UserRegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -34,7 +43,14 @@ import { UserRegisterComponent } from './users/user-register.component';
     NgbModule,
     ReactiveFormsModule,
     OrderModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ["localhost:5001"],
+        blacklistedRoutes: []
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

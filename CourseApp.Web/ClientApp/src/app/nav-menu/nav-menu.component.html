@@ -28,13 +28,26 @@
             <a class="nav-link text-dark" [routerLink]="['/']">Courses</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/user-register']"
-              >Register</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/course-create']"
               >Add Course</a
+            >
+          </li>
+          <li
+            *ngIf="!authService.isAuthenticated()"
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/user-login']"
+              >Login</a
+            >
+          </li>
+          <li
+            *ngIf="authService.isAuthenticated()"
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/user-logout']"
+              >Logout</a
             >
           </li>
         </ul>

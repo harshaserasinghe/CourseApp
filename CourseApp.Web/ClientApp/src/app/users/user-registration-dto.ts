@@ -1,4 +1,4 @@
-export interface IUserRegistration {
+export interface IUserRegistrationDTO {
   firstName: string;
   lastName: string;
   email: string;

@@ -1,15 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "./auth.service";
-import { IUserRegistration } from "./user-registration";
+import { IUserRegistrationDTO } from "./user-registration-dto";
 import { Router } from "@angular/router";
 
 @Component({
   selector: "app-user-register",
-  templateUrl: "./user-register.component.html",
-  styleUrls: ["./user-register.component.css"]
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.css"]
 })
-export class UserRegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   registrationFrom: FormGroup;
   firstName: FormControl;
   lastName: FormControl;
@@ -36,7 +36,7 @@ export class UserRegisterComponent implements OnInit {
   }
 
   registerUser(): void {
-    let user: IUserRegistration = {
+    let user: IUserRegistrationDTO = {
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       email: this.email.value,
@@ -46,7 +46,7 @@ export class UserRegisterComponent implements OnInit {
 
     this.authService.registerUser(user).subscribe(
       () => {
-        this.router.navigate(["/"]);
+        this.router.navigate(["user-login"]);
       },
       error => {
         console.log(error);
