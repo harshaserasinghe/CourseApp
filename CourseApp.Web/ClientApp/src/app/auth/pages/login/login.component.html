@@ -37,14 +37,10 @@
         >
           Sign in
         </button>
-        <button
-          type="button"
-          (click)="cancel()"
-          class="btn btn-secondary btn-cancel"
-        >
+        <a [routerLink]="['/']" class="btn btn-secondary btn-cancel">
           Cancel
-        </button>
-        <a [routerLink]="['/user-register']" class="btn btn-primary btn-signup">
+        </a>
+        <a [routerLink]="['/auth/register']" class="btn btn-primary btn-signup">
           Sign up
         </a>
       </form>

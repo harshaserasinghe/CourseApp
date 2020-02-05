@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ICourseDTO } from "./course-dto";
-import { CourseService } from "./course.service";
+import { ICourseDTO } from "../../models/course-dto";
+import { CourseService } from "../../../core/services/course.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ICourseUpdateDTO } from "./course-update-dto";
+import { ICourseUpdateDTO } from "../../models/course-update-dto";
 
 @Component({
   selector: "app-course-edit",
@@ -84,9 +84,5 @@ export class CourseEditComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  cancel(): void {
-    this.router.navigate(["/"]);
   }
 }

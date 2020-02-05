@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { ICourseDTO } from "./course-dto";
-import { CourseService } from "./course.service";
+import { ICourseDTO } from "../../models/course-dto";
+import { CourseService } from "../../../core/services/course.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { OrderPipe } from "ngx-order-pipe";
 

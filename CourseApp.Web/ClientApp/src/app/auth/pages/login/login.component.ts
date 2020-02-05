@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../../../core/services/auth.service";
 import { Router } from "@angular/router";
-import { ILoginDto } from "./login-dto";
+import { ILoginDto } from "../../models/login-dto";
 
 @Component({
   selector: "app-login",
@@ -41,9 +41,5 @@ export class LoginComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  cancel(): void {
-    this.router.navigate(["/"]);
   }
 }

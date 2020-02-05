@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AuthService } from "./auth.service";
-import { IUserRegistrationDTO } from "./user-registration-dto";
+import { AuthService } from "../../../core/services/auth.service";
+import { IUserRegistrationDTO } from "../../models/user-registration-dto";
 import { Router } from "@angular/router";
+import { MustMatchValidator } from "src/app/shared/validators/must-match.validator";
 
 @Component({
   selector: "app-user-register",
@@ -22,9 +23,15 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.firstName = new FormControl("", Validators.required);
     this.lastName = new FormControl("", Validators.required);
-    this.email = new FormControl("", Validators.required);
-    this.password = new FormControl("", Validators.required);
-    this.confirmPassword = new FormControl("", Validators.required);
+    this.email = new FormControl("", [Validators.required, Validators.email]);
+    this.password = new FormControl("", [
+      Validators.required,
+      Validators.minLength(8)
+    ]);
+    this.confirmPassword = new FormControl("", [
+      Validators.required,
+      Validators.minLength(8)
+    ]);
 
     this.registrationFrom = new FormGroup({
       firstName: this.firstName,
@@ -46,15 +53,11 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerUser(user).subscribe(
       () => {
-        this.router.navigate(["user-login"]);
+        this.router.navigate(["/auth/login"]);
       },
       error => {
         console.log(error);
       }
     );
-  }
-
-  cancel(): void {
-    this.router.navigate(["/"]);
   }
 }

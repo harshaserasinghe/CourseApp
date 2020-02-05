@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ICourseDTO } from "./course-dto";
-import { CourseService } from "./course.service";
+import { ICourseDTO } from "../../models/course-dto";
+import { CourseService } from "../../../core/services/course.service";
 import { Router } from "@angular/router";
-import { ICourseCreateDTO } from "./course-create-dto";
+import { ICourseCreateDTO } from "../../models/course-create-dto";
 
 @Component({
   selector: "app-course-create",
@@ -46,15 +46,11 @@ export class CourseCreateComponent implements OnInit {
     };
     this.courseService.addCourse(courseCreateDTO).subscribe(
       course => {
-        this.router.navigate([`course-details/${course.id}`]);
+        this.router.navigate([`/course/details/${course.id}`]);
       },
       error => {
         console.log(error);
       }
     );
-  }
-
-  cancel(): void {
-    this.router.navigate(["/"]);
   }
 }

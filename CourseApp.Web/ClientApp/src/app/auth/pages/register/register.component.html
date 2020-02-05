@@ -39,7 +39,9 @@
           [ngClass]="{ error: email.invalid && email.dirty }"
         >
           <label for="email">Email</label>
-          <em *ngIf="email.invalid && email.dirty">Requried</em>
+          <em *ngIf="email.invalid && email.dirty"
+            >Requried or invalid Email</em
+          >
           <input
             type="text"
             id="email"
@@ -53,7 +55,9 @@
           [ngClass]="{ error: password.invalid && password.dirty }"
         >
           <label for="password">Password</label>
-          <em *ngIf="password.invalid && password.dirty">Requried</em>
+          <em *ngIf="password.invalid && password.dirty"
+            >Requried or minimum 8 characters</em
+          >
           <input
             type="password"
             id="password"
@@ -68,7 +72,7 @@
             error: confirmPassword.invalid && confirmPassword.dirty
           }"
         >
-          <label for="confirmPassword">Confirm Password</label>
+          <label for="confirmPassword">Requried or minimum 8 characters</label>
           <em *ngIf="confirmPassword.invalid && confirmPassword.dirty"
             >Requried</em
           >
@@ -87,13 +91,9 @@
         >
           Sign up
         </button>
-        <button
-          type="button"
-          (click)="cancel()"
-          class="btn btn-secondary btn-cancel"
-        >
+        <a [routerLink]="['/']" class="btn btn-secondary btn-cancel">
           Cancel
-        </button>
+        </a>
       </form>
     </div>
   </div>

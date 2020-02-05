@@ -4,11 +4,11 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from "@angular/common/http";
-import { IUserRegistrationDTO } from "./user-registration-dto";
 import { throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ILoginDto } from "./login-dto";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { IUserRegistrationDTO } from "src/app/auth/models/user-registration-dto";
+import { ILoginDto } from "src/app/auth/models/login-dto";
 
 @Injectable({
   providedIn: "root"

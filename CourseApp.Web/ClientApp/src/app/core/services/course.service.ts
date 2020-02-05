@@ -7,9 +7,9 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ICourseDTO } from "./course-dto";
-import { ICourseUpdateDTO } from "./course-update-dto";
-import { ICourseCreateDTO } from "./course-create-dto";
+import { ICourseDTO } from "src/app/course/models/course-dto";
+import { ICourseCreateDTO } from "src/app/course/models/course-create-dto";
+import { ICourseUpdateDTO } from "src/app/course/models/course-update-dto";
 
 @Injectable({
   providedIn: "root"
