@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { CourseLevel } from "../courses/course";
+import { CourseLevel } from "src/app/course/models/course-level";
 
 @Pipe({
   name: "enumMember"

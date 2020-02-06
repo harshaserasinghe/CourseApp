@@ -1,61 +1,64 @@
 import { Injectable, Inject } from "@angular/core";
 import {
   HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-  HttpHeaders
+  HttpHeaders,
+  HttpErrorResponse
 } from "@angular/common/http";
-import { Observable, throwError, of } from "rxjs";
+import { throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ICourse } from "./course";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { IUserRegistrationDTO } from "src/app/auth/models/user-registration-dto";
+import { ILoginDto } from "src/app/auth/models/login-dto";
 
 @Injectable({
   providedIn: "root"
 })
-export class CourseService {
-  courseUrl: string = "";
-
+export class AuthService {
+  authUrl: string = "";
   constructor(
     private http: HttpClient,
+    private jwtHelper: JwtHelperService,
     @Inject("BASE_URL") private baseUrl: string
   ) {
-    this.courseUrl = `${this.baseUrl}api/courses`;
+    this.authUrl = `${this.baseUrl}api/auth`;
   }
 
-  getCourses(filter: string): Observable<ICourse[]> {
-    const params = new HttpParams().set("filter", filter);
-    return this.http
-      .get<ICourse[]>(this.courseUrl, { params })
-      .pipe(catchError(this.handleError));
+  isAuthenticated(): boolean {
+    let token = localStorage.getItem("jwt");
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  getCourse(id: number): Observable<ICourse> {
-    return this.http
-      .get<ICourse>(`${this.courseUrl}/${id}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  addCourse(course: ICourse): Observable<ICourse> {
+  registerUser(user: IUserRegistrationDTO) {
+    const registerUrl: string = `${this.authUrl}/register`;
     const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     return this.http
-      .post<ICourse>(this.courseUrl, course, options)
+      .post<IUserRegistrationDTO>(registerUrl, user, options)
       .pipe(catchError(this.handleError));
   }
 
-  updateCourse(id: number, course: ICourse) {
+  login(cred: ILoginDto) {
+    const loginUrl: string = `${this.authUrl}/login`;
     const options = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     return this.http
-      .put(`${this.courseUrl}/${id}`, course, options)
+      .post<any>(loginUrl, cred, options)
       .pipe(catchError(this.handleError));
   }
 
-  removeCourse(id: number) {
+  logout() {
+    const loginUrl: string = `${this.authUrl}/logout`;
+    const options = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
     return this.http
-      .delete(`${this.courseUrl}/${id}`)
+      .post<any>(loginUrl, options)
       .pipe(catchError(this.handleError));
   }
 

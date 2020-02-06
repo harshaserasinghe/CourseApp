@@ -44,7 +44,7 @@
             "
           >
             <td>
-              <a [routerLink]="['/course-details', course.id]">
+              <a [routerLink]="['/course/details', course.id]">
                 {{ course.name }}
               </a>
             </td>
@@ -53,7 +53,7 @@
             <td>{{ course.category }}</td>
             <td>
               <a
-                [routerLink]="['/course-edit', course.id]"
+                [routerLink]="['/course/edit', course.id]"
                 class="btn btn-secondary"
               >
                 Edit

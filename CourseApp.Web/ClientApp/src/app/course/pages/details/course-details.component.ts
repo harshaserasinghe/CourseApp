@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { CourseService } from "./course.service";
-import { ICourse } from "./course";
+import { CourseService } from "../../../core/services/course.service";
+import { ICourseDTO } from "../../models/course-dto";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ["./course-details.component.css"]
 })
 export class CourseDetailsComponent implements OnInit {
-  course: ICourse;
+  course: ICourseDTO;
 
   constructor(
     private courseService: CourseService,
@@ -34,9 +34,5 @@ export class CourseDetailsComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  onBack(): void {
-    this.router.navigate(["/"]);
   }
 }

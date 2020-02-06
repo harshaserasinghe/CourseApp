@@ -1,9 +1,5 @@
 <div class="col-md-4">
-  <form
-    [formGroup]="updateCourseForm"
-    (ngSubmit)="updateCourse()"
-    autocomplete="off"
-  >
+  <form [formGroup]="newCourseForm" (ngSubmit)="addCourse()" autocomplete="off">
     <div class="form-group" [ngClass]="{ error: name.invalid && name.dirty }">
       <label for="name">Title</label>
       <em *ngIf="name.invalid && name.dirty">Requried</em>
@@ -70,17 +66,13 @@
     </div>
     <button
       type="submit"
-      [disabled]="updateCourseForm.invalid"
+      [disabled]="newCourseForm.invalid"
       class="btn btn-primary"
     >
       Submit
     </button>
-    <button
-      type="button"
-      (click)="cancel()"
-      class="btn btn-secondary btn-cancel"
-    >
+    <a [routerLink]="['/']" class="btn btn-secondary btn-cancel">
       Cancel
-    </button>
+    </a>
   </form>
 </div>
