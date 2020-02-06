@@ -33,7 +33,7 @@
             >
           </li>
           <li
-            *ngIf="!authService.isAuthenticated()"
+            *ngIf="!isAuthenticated()"
             class="nav-item"
             [routerLinkActive]="['link-active']"
           >
@@ -42,7 +42,7 @@
             >
           </li>
           <li
-            *ngIf="authService.isAuthenticated()"
+            *ngIf="isAuthenticated()"
             class="nav-item"
             [routerLinkActive]="['link-active']"
           >
