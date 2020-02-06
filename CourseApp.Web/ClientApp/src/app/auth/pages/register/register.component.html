@@ -11,7 +11,9 @@
           [ngClass]="{ error: firstName.invalid && firstName.dirty }"
         >
           <label for="firstName">First Name</label>
-          <em *ngIf="firstName.invalid && firstName.dirty">Requried</em>
+          <em *ngIf="firstName.errors?.required && firstName.dirty"
+            >Requried</em
+          >
           <input
             type="text"
             id="firstName"
@@ -25,7 +27,7 @@
           [ngClass]="{ error: lastName.invalid && lastName.dirty }"
         >
           <label for="lastName">Last Name</label>
-          <em *ngIf="lastName.invalid && lastName.dirty">Requried</em>
+          <em *ngIf="lastName.errors?.required && lastName.dirty">Requried</em>
           <input
             type="text"
             id="lastName"
@@ -39,9 +41,8 @@
           [ngClass]="{ error: email.invalid && email.dirty }"
         >
           <label for="email">Email</label>
-          <em *ngIf="email.invalid && email.dirty"
-            >Requried or invalid Email</em
-          >
+          <em *ngIf="email.errors?.required && email.dirty">Requried</em>
+          <em *ngIf="email.errors?.email && email.dirty">Invalid Email</em>
           <input
             type="text"
             id="email"
@@ -55,8 +56,9 @@
           [ngClass]="{ error: password.invalid && password.dirty }"
         >
           <label for="password">Password</label>
-          <em *ngIf="password.invalid && password.dirty"
-            >Requried or minimum 8 characters</em
+          <em *ngIf="password.errors?.required && password.dirty">Requried</em>
+          <em *ngIf="password.errors?.minlength && password.dirty"
+            >Minimum level 8</em
           >
           <input
             type="password"
@@ -73,9 +75,19 @@
           }"
         >
           <label for="confirmPassword">Requried or minimum 8 characters</label>
-          <em *ngIf="confirmPassword.invalid && confirmPassword.dirty"
+          <em *ngIf="confirmPassword.errors?.required && confirmPassword.dirty"
             >Requried</em
           >
+          <em *ngIf="confirmPassword.errors?.minlength && confirmPassword.dirty"
+            >Minimum level 8</em
+          >
+          <!-- <em
+            *ngIf="
+              confirmPassword.errors?.confirmPasswordValidator &&
+              confirmPassword.dirty
+            "
+            >Password and confirm password not matched</em
+          > -->
           <input
             type="password"
             id="confirmPassword"

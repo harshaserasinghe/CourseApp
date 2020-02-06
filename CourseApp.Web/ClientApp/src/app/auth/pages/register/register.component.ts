@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "../../../core/services/auth.service";
 import { IUserRegistrationDTO } from "../../models/user-registration-dto";
 import { Router } from "@angular/router";
-import { MustMatchValidator } from "src/app/shared/validators/must-match.validator";
+import { confirmPasswordValidator } from "src/app/shared/validators/confirm-password.validator";
 
 @Component({
   selector: "app-user-register",
@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
     this.confirmPassword = new FormControl("", [
       Validators.required,
       Validators.minLength(8)
+      //confirmPasswordValidator("password", "confirmPassword")
     ]);
 
     this.registrationFrom = new FormGroup({
