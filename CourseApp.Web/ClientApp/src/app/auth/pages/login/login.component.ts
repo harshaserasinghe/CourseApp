@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "../../../core/services/auth.service";
 import { Router } from "@angular/router";
 import { ILoginDto } from "../../models/login-dto";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-login",
@@ -14,7 +15,11 @@ export class LoginComponent implements OnInit {
   username: FormControl;
   password: FormControl;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.username = new FormControl("", Validators.required);
@@ -36,8 +41,10 @@ export class LoginComponent implements OnInit {
       token => {
         localStorage.setItem("jwt", token.token);
         this.router.navigate(["/"]);
+        this.toastr.info("Sign in success.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );

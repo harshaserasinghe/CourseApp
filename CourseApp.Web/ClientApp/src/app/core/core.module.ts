@@ -8,15 +8,13 @@ import { JwtModule } from "@auth0/angular-jwt";
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ["localhost:5001"],
-        blacklistedRoutes: []
+        tokenGetter: tokenGetter
       }
     })
   ]
 })
 export class CoreModule {}
 
-export function tokenGetter() {
+export function tokenGetter(): any {
   return localStorage.getItem("jwt");
 }

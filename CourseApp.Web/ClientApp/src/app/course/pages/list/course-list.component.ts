@@ -3,6 +3,7 @@ import { ICourseDTO } from "../../models/course-dto";
 import { CourseService } from "../../../core/services/course.service";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { OrderPipe } from "ngx-order-pipe";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "course-list",
@@ -20,7 +21,8 @@ export class CourseListComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private modalService: NgbModal,
-    private orderPipe: OrderPipe
+    private orderPipe: OrderPipe,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -38,6 +40,7 @@ export class CourseListComponent implements OnInit {
         );
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );
@@ -48,8 +51,10 @@ export class CourseListComponent implements OnInit {
       () => {
         this.updateTable();
         this.modalService.dismissAll();
+        this.toastr.success("Course deleted.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );

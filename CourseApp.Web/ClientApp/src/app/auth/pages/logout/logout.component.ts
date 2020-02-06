@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../../core/services/auth.service";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-logout",
@@ -8,7 +9,11 @@ import { Router } from "@angular/router";
   styleUrls: ["./logout.component.css"]
 })
 export class LogoutComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.logout();
@@ -19,8 +24,10 @@ export class LogoutComponent implements OnInit {
       () => {
         localStorage.removeItem("jwt");
         this.router.navigate(["/"]);
+        this.toastr.info("Sign out success.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );

@@ -4,6 +4,7 @@ import { ICourseDTO } from "../../models/course-dto";
 import { CourseService } from "../../../core/services/course.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ICourseUpdateDTO } from "../../models/course-update-dto";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-course-edit",
@@ -22,7 +23,8 @@ export class CourseEditComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -51,6 +53,7 @@ export class CourseEditComponent implements OnInit {
         this.mapCourse();
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );
@@ -79,8 +82,10 @@ export class CourseEditComponent implements OnInit {
     this.courseService.updateCourse(param, courseUpdateDTO).subscribe(
       () => {
         this.router.navigate(["/"]);
+        this.toastr.success("Course updated.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );

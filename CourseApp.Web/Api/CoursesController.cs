@@ -46,7 +46,7 @@ namespace CourseApp.Web.Api
             return Ok(courseDTOs);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public IActionResult Post(CourseCreateDTO courseCreateDTO)
         {
             var newCourse = Mapper.Map<Course>(courseCreateDTO);

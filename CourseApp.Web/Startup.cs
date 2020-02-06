@@ -60,8 +60,6 @@ namespace CourseApp.Web
             services.AddIdentity<User, IdentityRole>(opt =>
             {
                 opt.Password.RequiredLength = 8;
-                opt.Password.RequireDigit = true;
-                opt.Password.RequireUppercase = true;
             }).AddEntityFrameworkStores<CourseDbContext>();
 
             services.AddAuthentication(opt =>
@@ -72,12 +70,8 @@ namespace CourseApp.Web
             {
                 opt2.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://localhost:5001",
-                    ValidAudience = "https://localhost:5001",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("secretKey")))
                 };
             });
