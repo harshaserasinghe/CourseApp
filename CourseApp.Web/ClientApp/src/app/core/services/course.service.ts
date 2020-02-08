@@ -37,7 +37,7 @@ export class CourseService {
   getCourse(id: number): Observable<ICourseDTO> {
     return this.http
       .get<ICourseDTO>(`${this.courseUrl}/${id}`)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.errorService.handleError));
   }
 
   addCourse(course: ICourseCreateDTO): Observable<ICourseDTO> {
