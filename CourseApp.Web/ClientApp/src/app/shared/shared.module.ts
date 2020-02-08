@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { OrderModule } from "ngx-order-pipe";
 import { EnumMemberPipe } from "./pipes/enum-member.pipe";
+import { ToastrModule, GlobalConfig } from "ngx-toastr";
 
 @NgModule({
   declarations: [EnumMemberPipe],
@@ -14,6 +15,11 @@ import { EnumMemberPipe } from "./pipes/enum-member.pipe";
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: "toast-bottom-right",
+      preventDuplicates: true
+    }),
     OrderModule
   ],
   exports: [
@@ -23,6 +29,7 @@ import { EnumMemberPipe } from "./pipes/enum-member.pipe";
     ReactiveFormsModule,
     NgbModule,
     OrderModule,
+    ToastrModule,
     EnumMemberPipe
   ]
 })

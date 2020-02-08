@@ -4,6 +4,7 @@ import { AuthService } from "../../../core/services/auth.service";
 import { IUserRegistrationDTO } from "../../models/user-registration-dto";
 import { Router } from "@angular/router";
 import { confirmPasswordValidator } from "src/app/shared/validators/confirm-password.validator";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-user-register",
@@ -18,7 +19,11 @@ export class RegisterComponent implements OnInit {
   password: FormControl;
   confirmPassword: FormControl;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.firstName = new FormControl("", Validators.required);
@@ -28,11 +33,7 @@ export class RegisterComponent implements OnInit {
       Validators.required,
       Validators.minLength(8)
     ]);
-    this.confirmPassword = new FormControl("", [
-      Validators.required,
-      Validators.minLength(8)
-      //confirmPasswordValidator("password", "confirmPassword")
-    ]);
+    this.confirmPassword = new FormControl("");
 
     this.registrationFrom = new FormGroup({
       firstName: this.firstName,
@@ -41,6 +42,12 @@ export class RegisterComponent implements OnInit {
       password: this.password,
       confirmPassword: this.confirmPassword
     });
+
+    this.confirmPassword.setValidators([
+      Validators.required,
+      Validators.minLength(8),
+      confirmPasswordValidator(this.password, this.confirmPassword)
+    ]);
   }
 
   registerUser(): void {
@@ -55,8 +62,10 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser(user).subscribe(
       () => {
         this.router.navigate(["/auth/login"]);
+        this.toastr.info("Sign up success.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );

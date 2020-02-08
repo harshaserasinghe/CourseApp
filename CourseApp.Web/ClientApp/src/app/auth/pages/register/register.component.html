@@ -74,20 +74,20 @@
             error: confirmPassword.invalid && confirmPassword.dirty
           }"
         >
-          <label for="confirmPassword">Requried or minimum 8 characters</label>
+          <label for="confirmPassword">Confirm Password</label>
           <em *ngIf="confirmPassword.errors?.required && confirmPassword.dirty"
             >Requried</em
           >
           <em *ngIf="confirmPassword.errors?.minlength && confirmPassword.dirty"
             >Minimum level 8</em
           >
-          <!-- <em
+          <em
             *ngIf="
               confirmPassword.errors?.confirmPasswordValidator &&
               confirmPassword.dirty
             "
             >Password and confirm password not matched</em
-          > -->
+          >
           <input
             type="password"
             id="confirmPassword"

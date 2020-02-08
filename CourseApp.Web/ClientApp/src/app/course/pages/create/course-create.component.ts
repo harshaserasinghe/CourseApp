@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ICourseDTO } from "../../models/course-dto";
 import { CourseService } from "../../../core/services/course.service";
 import { Router } from "@angular/router";
 import { ICourseCreateDTO } from "../../models/course-create-dto";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-course-create",
@@ -18,7 +18,11 @@ export class CourseCreateComponent implements OnInit {
   category: FormControl;
   author: FormControl;
 
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.name = new FormControl("", Validators.required);
@@ -47,8 +51,10 @@ export class CourseCreateComponent implements OnInit {
     this.courseService.addCourse(courseCreateDTO).subscribe(
       course => {
         this.router.navigate([`/course/details/${course.id}`]);
+        this.toastr.success("course added.");
       },
       error => {
+        this.toastr.error("Error occurred.");
         console.log(error);
       }
     );
