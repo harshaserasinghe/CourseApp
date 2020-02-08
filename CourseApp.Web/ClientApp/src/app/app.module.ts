@@ -6,6 +6,7 @@ import { NavMenuComponent } from "./nav-menu/nav-menu.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { CoreModule } from "./core/core.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { JwtModule } from "@auth0/angular-jwt";
 
 @NgModule({
   declarations: [AppComponent, NavMenuComponent],
