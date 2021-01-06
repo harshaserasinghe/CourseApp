@@ -16,20 +16,21 @@ namespace CourseApp.Data.Repositories
 
         public IEnumerable<Course> GetAll(string filter)
         {
-            if (filter == null)
+            var query = CourseDbContext.Courses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter))
             {
-                return CourseDbContext.Courses.ToList();
+                query = query.Where(c => c.Name.Contains(filter)).AsQueryable();
             }
-            else
-            {
-                return CourseDbContext.Courses.Where(c => c.Name.Contains(filter)).ToList();
-            }
+
+            return query.ToList();
         }
 
         public Course GetById(int id)
         {
             return CourseDbContext.Courses.FirstOrDefault(c => c.Id == id);
         }
+
         public Course Add(Course newCourse)
         {
             CourseDbContext.Courses.Add(newCourse);
