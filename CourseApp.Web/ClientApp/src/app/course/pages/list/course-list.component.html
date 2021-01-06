@@ -1,0 +1,102 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row search-row">
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="filterBy" />
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary search-btn" (click)="getCourses()">
+          Search
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table
+        class="table table-striped"
+        aria-labelledby="tableLabel"
+        *ngIf="courses"
+      >
+        <thead>
+          <tr>
+            <th [class.active]="order === 'name'" (click)="setOrder('name')">
+              Title<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
+            <th [class.active]="order === 'level'" (click)="setOrder('level')">
+              Skill Level<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
+            <th
+              [class.active]="order === 'rating'"
+              (click)="setOrder('rating')"
+            >
+              Rating<span [hidden]="reverse">▼</span
+              ><span [hidden]="!reverse">▲</span>
+            </th>
+            <th>Path</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let course of courses | orderBy: order:reverse:'case-insensitive'
+            "
+          >
+            <td>
+              <a [routerLink]="['/course/details', course.id]">
+                {{ course.name }}
+              </a>
+            </td>
+            <td>{{ course.level | enumMember }}</td>
+            <td>{{ course.rating }}/5</td>
+            <td>{{ course.category }}</td>
+            <td>
+              <a
+                [routerLink]="['/course/edit', course.id]"
+                class="btn btn-secondary"
+              >
+                Edit
+              </a>
+              <button
+                class="btn btn-warning delete-btn"
+                (click)="open(deleteModal, course.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Delete confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5>Are you want to delete ?</h5>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="deleteCourse()">
+      OK
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

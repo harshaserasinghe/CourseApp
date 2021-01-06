@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CourseApp.Core.DTOs;
 using CourseApp.Core.Entities;
-using CourseApp.Core.Validators;
 using CourseApp.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,16 +15,13 @@ namespace CourseApp.Web.Api
     {
         public ICourseRepository CourseRepository { get; private set; }
         public IMapper Mapper { get; }
-        public CourseValidator CourseValidator { get; private set; }
 
         public CoursesController(
             ICourseRepository courseRepository,
-            IMapper mapper,
-            CourseValidator courseValidator)
+            IMapper mapper)
         {
             CourseRepository = courseRepository;
             Mapper = mapper;
-            CourseValidator = courseValidator;
         }
 
         [HttpGet("{id}")]
@@ -49,27 +46,22 @@ namespace CourseApp.Web.Api
             return Ok(courseDTOs);
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult Post(CourseDTO courseDTO)
+        public IActionResult Post(CourseCreateDTO courseCreateDTO)
         {
-            var newCourse = Mapper.Map<Course>(courseDTO);
+            var newCourse = Mapper.Map<Course>(courseCreateDTO);
             newCourse.PublishedDate = DateTime.Now;
-            var valRes = CourseValidator.Validate(newCourse);
-
-            if (!valRes.IsValid)
-            {
-                return BadRequest(valRes.ToString());
-            }
-
             CourseRepository.Add(newCourse);
             CourseRepository.Commit();
             return CreatedAtAction(nameof(Get), new { id = newCourse.Id }, newCourse);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, CourseDTO courseDTO)
+        public IActionResult Put(int id, CourseUpdateDTO courseUpdateDTO)
         {
-            if (id != courseDTO.Id)
+            if (id != courseUpdateDTO.Id)
             {
                 return BadRequest();
             }
@@ -81,20 +73,14 @@ namespace CourseApp.Web.Api
                 return NotFound();
             }
 
-            var updateCourse = Mapper.Map<Course>(courseDTO);
+            var updateCourse = Mapper.Map<Course>(courseUpdateDTO);
             updateCourse.PublishedDate = existingCourse.PublishedDate;
-            var valRes = CourseValidator.Validate(updateCourse);
-
-            if (!valRes.IsValid)
-            {
-                return BadRequest(valRes.ToString());
-            }
-
             CourseRepository.Update(updateCourse, existingCourse);
             CourseRepository.Commit();
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

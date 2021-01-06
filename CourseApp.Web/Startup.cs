@@ -1,16 +1,21 @@
 using AutoMapper;
+using CourseApp.Core.Entities;
 using CourseApp.Data;
 using CourseApp.Data.Interfaces;
 using CourseApp.Data.Repositories;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace CourseApp.Web
 {
@@ -25,6 +30,16 @@ namespace CourseApp.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+                });
+            });
+
             services.AddAutoMapper(Assembly.Load("CourseApp.Core"));
 
             services.AddControllersWithViews().AddFluentValidation(opt =>
@@ -42,6 +57,29 @@ namespace CourseApp.Web
                 opt.UseSqlServer(Configuration.GetConnectionString("CourseDb"));
             });
 
+            services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<CourseDbContext>();
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt2 =>
+            {
+                opt2.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "https://localhost:5001",
+                    ValidAudience = "https://localhost:5001",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("secretKey")))
+                };
+            });
+
             services.AddScoped<ICourseRepository, CourseRepository>();
         }
 
@@ -57,6 +95,7 @@ namespace CourseApp.Web
                 app.UseHsts();
             }
 
+            app.UseCors("EnableCORS");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -66,6 +105,8 @@ namespace CourseApp.Web
             }
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
