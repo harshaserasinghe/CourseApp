@@ -1,15 +1,16 @@
 ﻿using CourseApp.Core.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CourseApp.Data.Interfaces
 {
     public interface ICourseRepository
     {
-        Course GetById(int id);
-        IEnumerable<Course> GetAll(string filter);
-        Course Add(Course newCourse);
+        Task<Course> GetByIdAsync(int id);
+        Task<IEnumerable<Course>> GetAllAsync(string filter);
+        Task<Course> AddAsync(Course newCourse);
         void Update(Course updateCourse, Course existingCourse);
         void Remove(Course deleteCourse);
-        int Commit();
+        Task<int> CommitAsync();
     }
 }
