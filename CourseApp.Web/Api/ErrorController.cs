@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CourseApp.Web.Api
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
         [Route("/error-development")]
