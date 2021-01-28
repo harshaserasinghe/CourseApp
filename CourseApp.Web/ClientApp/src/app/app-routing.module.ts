@@ -17,7 +17,8 @@ export const routes: Routes = [
     path: "",
     redirectTo: "course",
     pathMatch: "full"
-  }
+  },
+  { path: "**", component: ErrorComponent },
 ];
 
 @NgModule({
