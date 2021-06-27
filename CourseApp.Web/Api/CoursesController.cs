@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CourseApp.Web.Api
 {
@@ -25,9 +26,9 @@ namespace CourseApp.Web.Api
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Course> Get(int id)
+        public async Task<ActionResult<Course>> GetAsync(int id)
         {
-            var course = CourseRepository.GetById(id);
+            var course = await CourseRepository.GetByIdAsync(id);
             var courseDTO = Mapper.Map<CourseDTO>(course);
 
             if (courseDTO == null)
@@ -39,34 +40,34 @@ namespace CourseApp.Web.Api
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Course>> Get(string filter)
+        public async Task<ActionResult<IEnumerable<Course>>> GetAsync(string filter)
         {
-            var courses = CourseRepository.GetAll(filter);
+            var courses = await CourseRepository.GetAllAsync(filter);
             var courseDTOs = Mapper.Map<IEnumerable<CourseDTO>>(courses);
             return Ok(courseDTOs);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
-        public IActionResult Post(CourseCreateDTO courseCreateDTO)
+        public async Task<IActionResult> PostAsync(CourseCreateDTO courseCreateDTO)
         {
             var newCourse = Mapper.Map<Course>(courseCreateDTO);
             newCourse.PublishedDate = DateTime.Now;
-            CourseRepository.Add(newCourse);
-            CourseRepository.Commit();
-            return CreatedAtAction(nameof(Get), new { id = newCourse.Id }, newCourse);
+            await CourseRepository.AddAsync(newCourse);
+            await CourseRepository.CommitAsync();
+            return CreatedAtAction(nameof(GetAsync), new { id = newCourse.Id }, newCourse);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, CourseUpdateDTO courseUpdateDTO)
+        public async Task<IActionResult> PutAsync(int id, CourseUpdateDTO courseUpdateDTO)
         {
             if (id != courseUpdateDTO.Id)
             {
                 return BadRequest();
             }
 
-            var existingCourse = CourseRepository.GetById(id);
+            var existingCourse = await CourseRepository.GetByIdAsync(id);
 
             if (existingCourse == null)
             {
@@ -76,15 +77,15 @@ namespace CourseApp.Web.Api
             var updateCourse = Mapper.Map<Course>(courseUpdateDTO);
             updateCourse.PublishedDate = existingCourse.PublishedDate;
             CourseRepository.Update(updateCourse, existingCourse);
-            CourseRepository.Commit();
+            await CourseRepository.CommitAsync();
             return NoContent();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var deleteCourse = CourseRepository.GetById(id);
+            var deleteCourse = await CourseRepository.GetByIdAsync(id);
 
             if (deleteCourse == null)
             {
@@ -92,7 +93,7 @@ namespace CourseApp.Web.Api
             }
 
             CourseRepository.Remove(deleteCourse);
-            CourseRepository.Commit();
+            await CourseRepository.CommitAsync();
             return NoContent();
         }
     }

@@ -1,7 +1,9 @@
 ﻿using CourseApp.Core.Entities;
 using CourseApp.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CourseApp.Data.Repositories
 {
@@ -14,25 +16,26 @@ namespace CourseApp.Data.Repositories
             CourseDbContext = courseDbContext;
         }
 
-        public IEnumerable<Course> GetAll(string filter)
+        public async Task<IEnumerable<Course>> GetAllAsync(string filter)
         {
-            if (filter == null)
+            var query = CourseDbContext.Courses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter))
             {
-                return CourseDbContext.Courses.ToList();
+                query = query.Where(c => c.Name.Contains(filter)).AsQueryable();
             }
-            else
-            {
-                return CourseDbContext.Courses.Where(c => c.Name.Contains(filter)).ToList();
-            }
+
+            return await query.ToListAsync();
         }
 
-        public Course GetById(int id)
+        public async Task<Course> GetByIdAsync(int id)
         {
-            return CourseDbContext.Courses.FirstOrDefault(c => c.Id == id);
+            return await CourseDbContext.Courses.FirstOrDefaultAsync(c => c.Id == id);
         }
-        public Course Add(Course newCourse)
+
+        public async Task<Course> AddAsync(Course newCourse)
         {
-            CourseDbContext.Courses.Add(newCourse);
+            await CourseDbContext.Courses.AddAsync(newCourse);
             return newCourse;
         }
 
@@ -46,9 +49,9 @@ namespace CourseApp.Data.Repositories
             CourseDbContext.Courses.Remove(deleteCourse);
         }
 
-        public int Commit()
+        public async Task<int> CommitAsync()
         {
-            return CourseDbContext.SaveChanges();
+            return await CourseDbContext.SaveChangesAsync();
         }
     }
 }

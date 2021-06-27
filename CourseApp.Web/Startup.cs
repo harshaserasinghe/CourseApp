@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 
@@ -46,6 +47,8 @@ namespace CourseApp.Web
             {
                 opt.RegisterValidatorsFromAssembly(Assembly.Load("CourseApp.Core"));
             });
+
+            services.AddSwaggerGen();
 
             services.AddSpaStaticFiles(con =>
             {
@@ -88,6 +91,12 @@ namespace CourseApp.Web
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-development");
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Courses v1");
+                    //c.RoutePrefix = string.Empty;
+                });
             }
             else
             {
